@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="weatherapp">
+<head>
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+	<script type="text/javascript" src="angular.min.js"></script>
+	<script type="text/javascript" src="weather.js"></script>
+	<style type="text/css">
+		.ng-invalid.ng-dirty {
+			border-color: #FA787E;
+		}
+		.ng-valid.ng-dirty {
+			border-color: #78FA89;
+		}
+	</style>
+</head>
+
+<body class="container" ng-controller="weatherController as weather">
+	<div class="jumbotron text-center">
+	  <h1>AngularJS Weather</h1>
+	  <p>An <a href="https://angularjs.org/">AngularJS</a> app that grabs live weather data.</p>
+	  <p><a class="btn btn-primary btn-lg" href="#" role="button" ng-click="learnmoreaboutweatherapp = learnmoreaboutweatherapp + 1" ng-show="!learmoreaboutweatherapp % 2">Learn more</a></p>
+	  <p ng-show="learnmoreaboutweatherapp % 2" class="text-left">This is an example of what I can make using AngularJS and was created to get some more experience integrating it with a live API. It uses the <a href="http://openweathermap.org/">Open Weather Maps API</a> and the <a href="https://developers.google.com/maps/documentation/staticmaps/">Google Static Maps API.</a> </p>
+	</div>
+	<div >
+		<table class="table table-striped table-hover table-bordered">
+		<thead>
+			<tr>
+				<th>City</th>
+				<th>Google Static Map</th>
+				<th>Temperature</th>
+				<th>Description</th>
+				<th>Humidity</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="onecityweather in weathers">
+				<td>{{onecityweather.name}}, {{onecityweather.sys.country}}</td>
+				<td><img src="https://maps.googleapis.com/maps/api/staticmap?center={{onecityweather.coord.lat}},{{onecityweather.coord.lon}}&zoom=8&size=150x150" /></td>
+				<td>{{onecityweather.main.temp}} C</td>
+				<td>{{onecityweather.weather[0].description}}</td>
+				<td>{{onecityweather.main.humidity}} %</td>
+			</tr>
+		</tbody>
+		</table>
+	</div>
+	<h3>Add another place here</h3>
+	<div ng-show="weatherloading" class="alert alert-info" role="alert">Loading...</div>
+	<form name="weatherForm" ng-submit="weatherForm.$valid && weather.addWeather(weather)" novalidate>
+		<label>Place:</label>
+		<input type="text" ng-model="weather.place" required />
+		<input type="submit" value="Add" ng-click="weatherloading = 1" />
+	</form>
+</body>
+</html>
